@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.Builder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,6 +37,7 @@ public class CheckoutInfoPage extends BasePage{
     @FindBy(className = "react-burger-menu-btn")
     private WebElement burgerBtn;
 
+    @Builder
     public CheckoutInfoPage(WebDriver driver) {
         super(driver);
         burgerPopUp = BurgerPopUp.builder()
@@ -65,22 +67,30 @@ public class CheckoutInfoPage extends BasePage{
 
     public void clickOnCancel(){
         click(cancelBtn);
+        getLog().info("Cancel button was clicked");
     }
 
     public void clickOnContinue(){
         click(continueBtn);
+        getLog().info("Continue button was clicked");
     }
 
-    public void fillFirstName(String name){
+    public CheckoutInfoPage fillFirstName(String name){
         type(firstNameInput, name);
+        getLog().info("First name was written");
+        return this;
     }
 
-    public void fillLastName(String lastName){
+    public CheckoutInfoPage fillLastName(String lastName){
         type(lastNameInput, lastName);
+        getLog().info("Last name was written");
+        return this;
     }
 
-    public void fillPostalCode(String code){
+    public CheckoutInfoPage fillPostalCode(String code){
         type(postalInput, code);
+        getLog().info("Postal code was written");
+        return this;
     }
 
     public String getErrorMessage(){

@@ -1,5 +1,7 @@
 package pages;
 
+import lombok.Builder;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,6 +31,7 @@ public class CompletionPage extends BasePage{
     @FindBy(className = "title")
     private WebElement pageTitle;
 
+    @Builder
     public CompletionPage(WebDriver driver) {
         super(driver);
         burgerPopUp = BurgerPopUp.builder()
@@ -52,4 +55,16 @@ public class CompletionPage extends BasePage{
         return elementExist(pageTitle) && pageTitle.getText().contains("COMPLETE!");
     }
 
+    public WebElement getCartBadge(){
+        try {
+            return cartBtn.findElement(By.className("shopping_cart_link"));
+        }catch (Exception e){
+            getLog().error("Element is not present "+e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean isCartEmpty(){
+        return getCartBadge() != null;
+    }
 }

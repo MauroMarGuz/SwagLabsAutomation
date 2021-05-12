@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.Builder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
@@ -30,6 +31,7 @@ public class CartPage extends BasePage{
 
     private BurgerPopUp burgerPopUp;
 
+    @Builder
     public CartPage(WebDriver driver) {
         super(driver);
         burgerPopUp = BurgerPopUp.builder()
@@ -43,6 +45,7 @@ public class CartPage extends BasePage{
 
     public void checkout(){
         click(checkoutBtn);
+        getLog().info("Checkout button clicked");
     }
 
     public boolean isItemsInfoDisplayed(){
@@ -91,5 +94,12 @@ public class CartPage extends BasePage{
         return HomePage.builder()
                 .driver(getDriver())
                 .build();
+    }
+
+    public boolean isCartBtnDisplayed(){
+        return elementExist(cartBtn);
+    }
+    public boolean isBurgerBtnDisplayed(){
+        return elementExist(burgerBtn);
     }
 }

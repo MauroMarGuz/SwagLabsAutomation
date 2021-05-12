@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.Builder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,6 +47,7 @@ public class CheckoutOverviewPage extends BasePage{
 
     private double itemTotalValue;
 
+    @Builder
     public CheckoutOverviewPage(WebDriver driver) {
         super(driver);
        burgerPopUp = BurgerPopUp.builder()
@@ -69,10 +71,12 @@ public class CheckoutOverviewPage extends BasePage{
 
     public void clickOnCancel(){
         click(cancelBtn);
+        getLog().info("Cancel button was clicked");
     }
 
     public void clickOnFinish(){
         click(finishBtn);
+        getLog().info("Finish button was clicked");
     }
 
     public boolean isItemTotalCorrect(){
@@ -124,5 +128,11 @@ public class CheckoutOverviewPage extends BasePage{
         click(burgerPopUp.getResetStateLink());
         click(burgerPopUp.getBurgerCloseBtn());
         return isCartEmpty();
+    }
+    public boolean isCartBtnDisplayed(){
+        return elementExist(cartBtn);
+    }
+    public boolean isBurgerBtnDisplayed(){
+        return elementExist(burgerBtn);
     }
 }

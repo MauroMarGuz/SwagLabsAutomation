@@ -2,7 +2,6 @@ package pages;
 
 import lombok.Builder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,7 +33,7 @@ public class HomePage extends BasePage{
     @FindBy(className = "app_logo")
     private WebElement appLogo;
 
-    @FindBy(className = "inventory_list")
+    @FindBy(className = "inventory_container")
     private WebElement container;
 
     private BurgerPopUp burgerPopUp;
@@ -45,13 +44,13 @@ public class HomePage extends BasePage{
     @Builder
     public HomePage(WebDriver driver) {
         super(driver);
-        items = getItemList();
         burgerPopUp = BurgerPopUp.builder()
                 .driver(driver)
                 .build();
+        items = getItemList();
     }
 
-    public void addLowestPriceItem() {
+    public HomePage addLowestPriceItem() {
         try{
             double minPrice = getLowestPrice();
 
@@ -62,10 +61,11 @@ public class HomePage extends BasePage{
                     .findFirst()
                     .orElseThrow(Exception::new)
                     .findElement(By.className("btn_primary")));
-
+            getLog().info("Lowest price item was added to the cart");
         }catch (Exception e){
             getLog().error("Lowest price couldn't been found "+ e.getMessage());
         }
+        return this;
     }
 
     public void filterItemsBy(String value){
@@ -74,7 +74,7 @@ public class HomePage extends BasePage{
         items = getItemList();
     }
 
-    public void addHighestPriceItem(){
+    public HomePage addHighestPriceItem(){
         try{
             double maxPrice = getHighestPrice();
 
@@ -85,10 +85,11 @@ public class HomePage extends BasePage{
                     .findFirst()
                     .orElseThrow(Exception::new)
                     .findElement(By.className("btn_primary")));
-
+            getLog().info("Highest price item was added to the cart");
         }catch (Exception e){
             getLog().error("Highest price couldn't been found "+ e.getMessage());
         }
+        return this;
     }
 
     public boolean isSortedAZ(){
@@ -157,7 +158,8 @@ public class HomePage extends BasePage{
      * @return list of items
      */
     public List<WebElement> getItemList(){
-        return container.findElements(By.cssSelector("div[class='inventory_item']"));
+        System.out.println(container.isDisplayed());
+        return container.findElements(By.className("inventory_item"));
     }
 
     public WebElement getCartBadge(){
@@ -188,5 +190,54 @@ public class HomePage extends BasePage{
     public boolean isSauceLabsWebPageDisplayed(){
         WebElement sauceLabLogin = getDriver().findElement(By.className("link has-text-white"));
         return elementExist(sauceLabLogin) && sauceLabLogin.isDisplayed();
+    }
+
+    public boolean isBurgerBtnDisplayed(){
+        return elementExist(burgerBtn);
+    }
+
+    public boolean isAppLogoDisplayed(){
+        return elementExist(appLogo);
+    }
+
+    public boolean isFilterBtnDisplayed(){
+        return elementExist(filterBtn);
+    }
+
+    public boolean isScreenTitleDisplayed(){
+        return elementExist(screenTitle);
+    }
+
+    public boolean isScreenIconDisplayed(){
+        return elementExist(screenIcon);
+    }
+
+    public boolean isCartBtnDisplayed(){
+        return elementExist(cartBtn);
+    }
+
+    public void clickOnCart(){
+        click(cartBtn);
+        getLog().info("Cart button clicked");
+    }
+    public void clickOnBurgerBtn(){
+        click(burgerBtn);
+        getLog().info("Burger button clicked");
+    }
+    public void clickOnLogoutLink(){
+        click(burgerPopUp.getLogoutLink());
+        getLog().info("Logout link clicked");
+    }
+    public void clickOnAllItemsLink(){
+        click(burgerPopUp.getAllItemsLink());
+        getLog().info("All items link clicked");
+    }
+    public void clickOnAboutLink(){
+        click(burgerPopUp.getAboutLink());
+        getLog().info("About link clicked");
+    }
+    public void clickOnResetLink(){
+        click(burgerPopUp.getResetStateLink());
+        getLog().info("Reset link clicked");
     }
 }

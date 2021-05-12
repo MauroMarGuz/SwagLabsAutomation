@@ -27,16 +27,19 @@ public class LoginPage extends BasePage{
 
     public LoginPage clickOnLoginButton(){
         click(loginBtn);
+        getLog().info("Login button clicked");
         return this;
     }
 
     public LoginPage writeUserName(String user){
         type(userName,user);
+        getLog().info("User name typed");
         return this;
     }
 
     public LoginPage writePassword(String password){
         type(this.password, password);
+        getLog().info("Password typed");
         return this;
     }
 
